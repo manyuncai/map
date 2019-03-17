@@ -37,7 +37,7 @@ var locations = [
       ];
 
 
-
+//initMap();
 
 
 var myLocation = function(data) {
@@ -47,23 +47,13 @@ var myLocation = function(data) {
   this.date = ko.observable(data.date);
   //add nickname array to cat
   this.location = ko.observableArray(data.location);
-}
+};
 
 
 
 
 var ViewModel = function () {
   var self = this;
-  var map;
-
-  function initMap () {
-    //var map;
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 34.6784656, lng: 135.4601305},
-      zoom: 14
-    });
-  };
-  initMap();
 
   this.locationList = ko.observableArray([]);
 
@@ -74,8 +64,17 @@ var ViewModel = function () {
   this.setLocation = function(clickedLocation){
     self.currentLocation(clickedLocation);
   };
-
 }; //end of the var ViewModel
 
 //this like the main, it will run ViewModel
 ko.applyBindings(new ViewModel());
+//function to initial the map
+var map;
+function initMap () {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 34.6784656, lng: 135.4601305},
+    zoom: 14
+    });
+    return map;
+  };
+this.initMap();

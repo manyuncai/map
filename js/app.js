@@ -8,7 +8,7 @@ var locations = [
         },
         {
           reservation : 'booking.com',
-          name : 'zumaya Ryokan',
+          name : 'Zumaya Ryokan',
           city: 'Kyoto',
           date : '4/16-4/18',
           location: [ 34.9906701, 135.7512123]
@@ -37,7 +37,6 @@ var locations = [
       ];
 
 
-//initMap();
 
 
 var myLocation = function(data) {
@@ -50,8 +49,6 @@ var myLocation = function(data) {
 };
 
 
-
-
 var ViewModel = function () {
   var self = this;
 
@@ -60,7 +57,7 @@ var ViewModel = function () {
   locations.forEach(function(locationItem){
     self.locationList.push( new myLocation(locationItem));
   });
-  this.currentLocation = ko.observable(this.locationList()[0]); //first cat on the list
+  this.currentLocation = ko.observable(this.locationList()[0]); //first location on the list
   this.setLocation = function(clickedLocation){
     self.currentLocation(clickedLocation);
   };
@@ -68,13 +65,51 @@ var ViewModel = function () {
 
 //this like the main, it will run ViewModel
 ko.applyBindings(new ViewModel());
+
 //function to initial the map
 var map;
+var markers = [];
+
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.6784656, lng: 135.4601305},
     zoom: 14
     });
-    return map;
-  };
-this.initMap();
+  var largeInfowindow = new google.maps.InfoWindow();
+  var bounds = new google.maps.LatLngBounds();
+  for (var i = 0; i < locations.length; i++){
+    //alert(locations.length);
+    var position = {lat: locations[i].location[0], lng:locations[i].location[1]};
+    //alert(position.lat);
+    var name = locations[i].name;
+    //alert(name);
+    var marker = new google.maps.Marker({
+      map: map,
+      position: position,
+      title: name,
+      animation: google.maps.Animation.DROP,
+      id: i
+    });
+    //alert(marker);
+    markers.push(marker);
+    marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfowindow);
+    });
+    bounds.extend(markers[i].position);
+  } //end of the for loop for each marker
+  map.fitBounds(bounds);
+
+  }; // end of initialize the maps
+
+  function populateInfoWindow(marker, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+      infowindow.marker = marker;
+      infowindow.setContent('<div>' + marker.title + '</div>');
+      infowindow.open(map, marker);
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick',function(){
+        infowindow.setMarker = null;
+      });
+    }
+  }

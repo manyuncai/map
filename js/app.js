@@ -112,4 +112,4 @@ function initMap () {
         infowindow.setMarker = null;
       });
     }
-  }
+  } // end of populateInfoWindow

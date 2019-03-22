@@ -11,6 +11,7 @@
 <body>
     <ul id="location-list" data-bind="foreach: locationList">
       <li data-bind= "text: name, click: $parent.setLocation"> </li>
+      <!--<li data-bind= "text: name, click: $parent.populateInfoWindow"> </li>-->
     </ul>
     <div id="location" data-bind="with:currentLocation">
 

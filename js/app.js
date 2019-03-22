@@ -60,8 +60,16 @@ var ViewModel = function () {
   this.currentLocation = ko.observable(this.locationList()[0]); //first location on the list
   this.setLocation = function(clickedLocation){
     self.currentLocation(clickedLocation);
+    //alert(clickedLocation.name()); //how to pass the clickedLocation as maker?
+    for(var i=0; i<markers.length;i++){
+      if (clickedLocation.name() == markers[i].title){
+        //alert(i);
+        populateInfoWindow(markers[i], new google.maps.InfoWindow() );
+      }
+    }
   };
 }; //end of the var ViewModel
+
 
 //this like the main, it will run ViewModel
 ko.applyBindings(new ViewModel());
@@ -69,6 +77,7 @@ ko.applyBindings(new ViewModel());
 //function to initial the map
 var map;
 var markers = [];
+//var largeInfowindow = new google.maps.InfoWindow();
 
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -90,7 +99,6 @@ function initMap () {
       animation: google.maps.Animation.DROP,
       id: i
     });
-    //alert(marker);
     markers.push(marker);
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
@@ -98,12 +106,13 @@ function initMap () {
     bounds.extend(markers[i].position);
   } //end of the for loop for each marker
   map.fitBounds(bounds);
+}; // end of initialize the maps
 
-  }; // end of initialize the maps
-
-  function populateInfoWindow(marker, infowindow) {
+function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
+    //alert("insider");
     if (infowindow.marker != marker) {
+      //alert("insider");
       infowindow.marker = marker;
       infowindow.setContent('<div>' + marker.title + '</div>');
       infowindow.open(map, marker);
@@ -112,4 +121,4 @@ function initMap () {
         infowindow.setMarker = null;
       });
     }
-  } // end of populateInfoWindow
+  }; // end of populateInfoWindow

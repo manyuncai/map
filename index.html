@@ -9,8 +9,16 @@
     </style>
 </head>
 <body>
-    <ul id="location-list" data-bind="foreach: locationList">
-      <li data-bind= "text: name, click: $parent.setLocation"> </li>
+    <div>
+      <h2>My Vacation Spots</h2>
+      <form>
+
+        <input class="search" data-bind='value: filter, valueUpdate:"afterkeydown"' placeholder="search Locaction name"/>
+      </form>
+    </div>
+    <ul id="location-list" data-bind="foreach: mylocationsFilter">
+      <li data-bind="text: name"> </li>
+      <!--<li data-bind= "text: name, click: $parent.filterList"> </li> -->
       <!--<li data-bind= "text: name, click: $parent.populateInfoWindow"> </li>-->
     </ul>
     <div id="location" data-bind="with:currentLocation">

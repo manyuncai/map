@@ -44,7 +44,6 @@ var myLocation = function(data) {
   this.name = ko.observable(data.name);
   this.city = ko.observable (data.city);
   this.date = ko.observable(data.date);
-  //add nickname array to cat
   this.location = ko.observableArray(data.location);
 };
 
@@ -114,6 +113,7 @@ function initMap () {
 
   } //end of the for loop for each marker
   map.fitBounds(bounds);
+  ko.applyBindings(new ViewModel());
 }; // end of initialize the maps
 
 function populateInfoWindow(marker, infowindow) {
@@ -141,22 +141,21 @@ function populateInfoWindow(marker, infowindow) {
     locations.forEach(function(locationItem){
        self.locationList.push( new myLocation(locationItem));
      });
+     // this computed function returns selected location name and shows markers in the filter
     this.mylocationsFilter = ko.computed(function(){
-    var result = [];
+      var result = [];
       for (var i = 0; i <this.locationList().length; i++){
         //alert (this.locationList()[i].name());
         if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
           //alert (this.locationList()[i].name().toLowerCase());
           result.push(this.locationList()[i]);
           //alert(result)
-          this.markers[i].setVisible(true);
+          markers[i].setVisible(true);
           //alert(this.markers[i]);
         } else {
-          //markers[i].setVisible(false);
+          markers[i].setVisible(false);
         }
-      }
-      return result;
+      } //end of for loop
+      return result; //return mylocationsFilter result array
     },this); //end of mylocationsFilter
-  };
-
-  ko.applyBindings(new ViewModel());
+  }; // end of ViewModel

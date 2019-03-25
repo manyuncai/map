@@ -141,15 +141,17 @@ function populateInfoWindow(marker, infowindow) {
     locations.forEach(function(locationItem){
        self.locationList.push( new myLocation(locationItem));
      });
+
      // this computed function returns selected location name and shows markers in the filter
     this.mylocationsFilter = ko.computed(function(){
       var result = [];
       for (var i = 0; i <this.locationList().length; i++){
         //alert (this.locationList()[i].name());
+        var myMarker = markers[i];
         if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
           //alert (this.locationList()[i].name().toLowerCase());
           result.push(this.locationList()[i]);
-          //alert(result)
+          alert(result)
           markers[i].setVisible(true);
           //alert(this.markers[i]);
         } else {
@@ -158,4 +160,13 @@ function populateInfoWindow(marker, infowindow) {
       } //end of for loop
       return result; //return mylocationsFilter result array
     },this); //end of mylocationsFilter
+
+    this.showMarkerInforOnClick = function(){
+      alet ("here....")
+      this.populateInfoWindow(myMarker, self.largeInfoWindow);
+      this.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout((function() {
+        this.setAnimation(null);
+      }).bind(this), 1400);
+    }
   }; // end of ViewModel

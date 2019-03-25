@@ -35,6 +35,8 @@ var locations = [
           location: [ 35.692833,  139.7092541]
         }
       ];
+var markers = [];
+var map;
 
 var myLocation = function(data) {
   this.reservation = ko.observable(data.reservation);
@@ -63,6 +65,7 @@ var ViewModel = function(){
         //alert (this.locationList()[i].name().toLowerCase());
         result.push(this.locationList()[i]);
         //alert(result)
+
         //this.markers[i].setVisible(true);
         //alert(this.markers[i]);
       } else {
@@ -70,7 +73,7 @@ var ViewModel = function(){
       }
     }
     return result;
-  },this);
+  },this); //end of mylocationsFilter
 };
 
 ko.applyBindings(new ViewModel());
@@ -103,10 +106,11 @@ ko.applyBindings(new ViewModel());
 //ko.applyBindings(new ViewModel());
 
 //function to initial the map
-var map;
-var markers = [];
-//var largeInfowindow = new google.maps.InfoWindow();
+//var map;
+//var markers = [];
 
+//var largeInfowindow = new google.maps.InfoWindow();
+alert ("here....");
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.6784656, lng: 135.4601305},
@@ -128,9 +132,9 @@ function initMap () {
       animation: google.maps.Animation.DROP,
       id: i
     });
-
+    //alert(marker);
     markers.push(marker);
-    alert("here...");
+    //alert("here...");
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
     });

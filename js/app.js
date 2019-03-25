@@ -35,6 +35,7 @@ var locations = [
           location: [ 35.692833,  139.7092541]
         }
       ];
+
 var markers = [];
 var map;
 
@@ -48,35 +49,6 @@ var myLocation = function(data) {
 };
 
 //////////////////make a new ViewModel with filter
-var ViewModel = function(){
- var self = this;
-  this.filter = ko.observable("");
-  this.locationList = ko.observableArray([]);
-  //create locationList array with var location
-  locations.forEach(function(locationItem){
-     self.locationList.push( new myLocation(locationItem));
-   });
-  this.mylocationsFilter = ko.computed(function(){
-  var result = [];
-    for (var i = 0; i <this.locationList().length; i++){
-      //alert (this.locationList()[i].name());
-      //alert(this.filter());
-      if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
-        //alert (this.locationList()[i].name().toLowerCase());
-        result.push(this.locationList()[i]);
-        //alert(result)
-
-        //this.markers[i].setVisible(true);
-        //alert(this.markers[i]);
-      } else {
-        //this.markers[i].setVisible(false);
-      }
-    }
-    return result;
-  },this); //end of mylocationsFilter
-};
-
-ko.applyBindings(new ViewModel());
 
 ////////////////////////////
 //var ViewModel = function () {
@@ -110,7 +82,7 @@ ko.applyBindings(new ViewModel());
 //var markers = [];
 
 //var largeInfowindow = new google.maps.InfoWindow();
-alert ("here....");
+
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.6784656, lng: 135.4601305},
@@ -159,3 +131,32 @@ function populateInfoWindow(marker, infowindow) {
       });
     }
   }; // end of populateInfoWindow
+
+
+  var ViewModel = function(){
+    var self = this;
+    this.filter = ko.observable("");
+    this.locationList = ko.observableArray([]);
+    //create locationList array with var location
+    locations.forEach(function(locationItem){
+       self.locationList.push( new myLocation(locationItem));
+     });
+    this.mylocationsFilter = ko.computed(function(){
+    var result = [];
+      for (var i = 0; i <this.locationList().length; i++){
+        //alert (this.locationList()[i].name());
+        if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
+          //alert (this.locationList()[i].name().toLowerCase());
+          result.push(this.locationList()[i]);
+          //alert(result)
+          this.markers[i].setVisible(true);
+          //alert(this.markers[i]);
+        } else {
+          //markers[i].setVisible(false);
+        }
+      }
+      return result;
+    },this); //end of mylocationsFilter
+  };
+
+  ko.applyBindings(new ViewModel());

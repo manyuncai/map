@@ -49,38 +49,6 @@ var myLocation = function(data) {
 
 //////////////////make a new ViewModel with filter
 
-////////////////////////////
-//var ViewModel = function () {
-//  var self = this;
-
-//  this.locationList = ko.observableArray([]);
-
-//  locations.forEach(function(locationItem){
-//    self.locationList.push( new myLocation(locationItem));
-//  });
-
-//  this.currentLocation = ko.observable(this.locationList()[0]); //first location on the list
-//  this.setLocation = function(clickedLocation){
-//    self.currentLocation(clickedLocation);
-    //alert(clickedLocation.name()); //how to pass the clickedLocation as maker?
-//    for(var i=0; i<markers.length;i++){
-//      if (clickedLocation.name() == markers[i].title){
-        //alert(i);
-//        populateInfoWindow(markers[i], new google.maps.InfoWindow() );
-//      }
-//    }
-//  };
-//}; //end of the var ViewModel
-
-
-//this like the main, it will run ViewModel
-//ko.applyBindings(new ViewModel());
-
-//function to initial the map
-//var map;
-//var markers = [];
-
-//var largeInfowindow = new google.maps.InfoWindow();
 
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -146,12 +114,9 @@ function populateInfoWindow(marker, infowindow) {
     this.mylocationsFilter = ko.computed(function(){
       var result = [];
       for (var i = 0; i <this.locationList().length; i++){
-        //alert (this.locationList()[i].name());
         var myMarker = markers[i];
         if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
-          //alert (this.locationList()[i].name().toLowerCase());
           result.push(this.locationList()[i]);
-          //alert(result)
           markers[i].setVisible(true);
           //alert(this.markers[i]);
         } else {

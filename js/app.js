@@ -1,35 +1,35 @@
 var locations = [
         {
             reservation : 'AirBnB.com',
-            name : 'Ex Tenroku Apartment',
+            name : 'Ex Tenroku Apartment, Osaka',
             city: 'Osaka',
             date : '4/13-4/16',
             location: [34.709576, 135.5099030]
         },
         {
           reservation : 'booking.com',
-          name : 'Zumaya Ryokan',
+          name : 'Zumaya Ryokan, Kyoto',
           city: 'Kyoto',
           date : '4/16-4/18',
           location: [ 34.9906701, 135.7512123]
         },
         {
           Reservation : 'booking.com',
-          name : 'Hagi Takayama Kanko Hotel',
+          name : 'Hagi Takayama Kanko Hotel, Takayama',
           city: 'Takayama',
           date : '4/18-4/19',
           location: [ 36.1502081, 137.2584861]
         },
         {
           reservation : 'booking.com',
-          name : 'Relax Hostel Takayama St',
+          name : 'Relax Hostel Takayama St, Takayama',
           city: 'Takayama',
           date : '4/19-4/20',
           location: [ 36.1412253, 137.2502873]
         },
         {
           reservation : 'booking.com',
-          name : 'Hotel Listel Shinjuku',
+          name : 'Hotel Listel Shinjuku, Tokyo',
           city: 'Tokyo',
           date : '4/20-4/23',
           location: [ 35.692833,  139.7092541]
@@ -86,10 +86,22 @@ function initMap () {
 
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
-    //alert("insider");
     if (infowindow.marker != marker) {
-      //alert("insider");
       infowindow.marker = marker;
+      //adding Four Square API
+
+      clientID = "A5AP334QUNYVHP0YZXLG2TWX15IS1WYGECTAYBJSU4RIDEB3";
+      clientSecret= "IFVBHFLAL2M0WP2SRE3NAHAHRKOOJF1RXAJF2NDIRL1AEEVJ";
+      var foursquareURL="https://api.foursquare.com/v2/venues/explore?ll="+
+          infowindow.marker.position.lat()+","+infowindow.marker.position.lng()+
+          "&"+"client_id="+clientID+"&client_secret="+clientSecret+"&v=20190327"+
+          "&locale=ja&limit=3&query=Ramen";
+          console.log(foursquareURL);
+        $.getJSON(foursquareURL,function(data){
+          console.log(data);
+        });
+
+      //end of Four Square api
       infowindow.setContent('<div>' + marker.title + '</div>' +
                 '<div>' + marker.position + '</div>'  );
       infowindow.open(map, marker);
@@ -115,13 +127,14 @@ function populateInfoWindow(marker, infowindow) {
       var result = [];
       for (var i = 0; i <this.locationList().length; i++){
         var myMarker = markers[i];
-        if (this.locationList()[i].name().toLowerCase().includes(this.filter().toLowerCase())){
+        //alert ((this.locationList()[i].name()+","+this.locationList()[i].city()));
+        if ((this.locationList()[i].name()).toLowerCase().includes(this.filter().toLowerCase())){
           result.push(this.locationList()[i]);
           markers[i].setVisible(true);
           //alert(this.markers[i]);
         } else {
           markers[i].setVisible(false);
-        }
+        }// end of if
       } //end of for loop
       return result; //return mylocationsFilter result array
     },this); //end of mylocationsFilter

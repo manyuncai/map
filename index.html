@@ -21,14 +21,7 @@
       <!--<li data-bind= "text: name, click: $parent.filterList"> </li> -->
       <!--<li data-bind= "text: name, click: $parent.populateInfoWindow"> </li>-->
     </ul>
-    <div id="location" data-bind="with:currentLocation">
-
-        <h2 data-bind="text: name"></h2>
-        <h3 data-bind="text: reservation"> </h3>
-        <div data-bind="text: city"></div>
-        <div data-bind="text: location"></div>
-        <div data-bind="text: date"></div>
-    </div>
+  
     <div id="map"></div>
 
     <script src="js/lib/knockout-3.2.0.js"></script>
@@ -36,5 +29,6 @@
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDG6VRGeFDihTpzRslpphO7ZLyCjYF1iSE&callback=initMap">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </body>
 </html>

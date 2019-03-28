@@ -95,15 +95,23 @@ function populateInfoWindow(marker, infowindow) {
       var foursquareURL="https://api.foursquare.com/v2/venues/explore?ll="+
           infowindow.marker.position.lat()+","+infowindow.marker.position.lng()+
           "&"+"client_id="+clientID+"&client_secret="+clientSecret+"&v=20190327"+
-          "&locale=ja&limit=3&query=Ramen";
-          console.log(foursquareURL);
-        $.getJSON(foursquareURL,function(data){
-          console.log(data);
+          "&limit=5&query=Ramen";
+          //console.log(foursquareURL);
+          //issue at line 101
+          $.getJSON(foursquareURL,function(data){
+          //console.log(data);
+          var respond = data.response.groups[0].items[0].venue;
+          name = respond.name;
+          address = respond.location.address;
+          distance = respond.location.distance;
+          //console.log(distance);
         });
-
       //end of Four Square api
       infowindow.setContent('<div>' + marker.title + '</div>' +
-                '<div>' + marker.position + '</div>'  );
+                '<div>' + marker.position + '</div>' +
+                '<div>' + name + '</div>'+
+                '<div>' + address + '</div>'+
+              '<div>' + distance + '</div>');
       infowindow.open(map, marker);
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick',function(){

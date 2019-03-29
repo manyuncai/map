@@ -3,27 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Neighborhood Map</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
-      #map { height: 90%; }
+      #map { height: 100%; }
     </style>
 </head>
 <body>
-    <div>
-      <h2>My Vacation Spots</h2>
-      <form>
 
-        <input class="search" data-bind='value: filter, valueUpdate:"afterkeydown"' placeholder="search Locaction name">
-      </form>
-    </div>
-    <ul id="location-list" data-bind="foreach: mylocationsFilter">
-      <li data-bind ="text: name, click: $parent.showMarkerInforOnClick"> </li>
-      <!--<li data-bind= "text: name, click: $parent.filterList"> </li> -->
-      <!--<li data-bind= "text: name, click: $parent.populateInfoWindow"> </li>-->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+      <button class="w3-bar-item w3-button w3-large"
+      onclick="w3_close()">Close &times;</button>
+    <a href="#" class="w3-bar-item w3-button"><input class="search" data-bind='value: filter, valueUpdate:"afterkeydown"' placeholder="search Locaction name"></a>
+    <a href="#" class="w3-bar-item w3-button"><ul id="location-list" data-bind="foreach: mylocationsFilter"> </a>
+      <a href="#" class="w3-bar-item w3-button"><li data-bind ="text: name, click: $parent.showMarkerInforOnClick"> </li></a>
     </ul>
-  
+  </div>
+
+  <div id="main">
+    <div class="w3-teal">
+      <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+      <div class="w3-container">
+        <h1>My Vacation Map</h1>
+      </div>
+    </div>
+  </div>
     <div id="map"></div>
 
+    <script>
+    function w3_open() {
+      document.getElementById("main").style.marginLeft = "25%";
+      document.getElementById("mySidebar").style.width = "25%";
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("openNav").style.display = 'none';
+    }
+    function w3_close() {
+      document.getElementById("main").style.marginLeft = "0%";
+      document.getElementById("mySidebar").style.display = "none";
+      document.getElementById("openNav").style.display = "inline-block";
+    }
+    </script>
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/app.js"></script>
     <script async defer

@@ -47,13 +47,10 @@ var myLocation = function(data) {
   this.location = ko.observableArray(data.location);
 };
 
-//////////////////make a new ViewModel with filter
-
-
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.6784656, lng: 135.4601305},
-    zoom: 10
+    zoom: 20
     });
   var largeInfowindow = new google.maps.InfoWindow();
   var bounds = new google.maps.LatLngBounds();
@@ -87,6 +84,7 @@ function initMap () {
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
+      infowindow.setContent('');
       infowindow.marker = marker;
       //adding Four Square API
 
@@ -96,16 +94,22 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.marker.position.lat()+","+infowindow.marker.position.lng()+
           "&"+"client_id="+clientID+"&client_secret="+clientSecret+"&v=20190327"+
           "&limit=5&query=Ramen";
-          //console.log(foursquareURL);
-          //issue at line 101
-          $.getJSON(foursquareURL,function(data){
-          //console.log(data);
+          console.log(foursquareURL);
+      $.getJSON(foursquareURL,function(data){
+          console.log(data);
           var respond = data.response.groups[0].items[0].venue;
           name = respond.name;
-          address = respond.location.address;
+          address = respond.location.formattedAddress[0]
+                    + respond.location.formattedAddress[1] ;
+          console.log(address);
           distance = respond.location.distance;
-          //console.log(distance);
-        });
+          console.log(name + address + distance);
+        }).fail(function() {
+                // Send alert
+                alert(
+                    "There was an issue loading the Foursquare API. Please refresh your page to try again."
+                );
+            });
       //end of Four Square api
       infowindow.setContent('<div>' + marker.title + '</div>' +
                 '<div>' + marker.position + '</div>' +
@@ -154,7 +158,14 @@ function populateInfoWindow(marker, infowindow) {
         }
       }
       populateInfoWindow(myMarker, (new google.maps.InfoWindow()));
+      //alert(name + address + distance);
       myMarker.setAnimation(google.maps.Animation.BOUNCE);
       setTimeout(function() {myMarker.setAnimation(null);}, 750);
     } //end of showMarkerInforOnClick
   }; // end of ViewModel
+
+  googleError = function googleError() {
+      alert(
+          'Oops. Google Maps did not load. Please refresh the page and try again!'
+      );
+  };

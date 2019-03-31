@@ -1,3 +1,4 @@
+'use strict';
 var locations = [
         {
             reservation : 'AirBnB.com',
@@ -43,9 +44,9 @@ var map;
 var myLocation = function(data) {
   this.reservation = ko.observable(data.reservation);
   this.name = ko.observable(data.name);
-  this.city = ko.observable (data.city);
+  this.city = ko.observable(data.city);
   this.date = ko.observable(data.date);
-  this.location = ko.observableArray(data.location);
+  this.location =ko.observableArray(data.location);
 };
 
 // initMap is used for google API to set up map with markers.
@@ -70,6 +71,7 @@ function initMap () {
     markers.push(marker);
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
+
     });
     bounds.extend(markers[i].position);
   } //end of the for loop for each marker
@@ -83,9 +85,11 @@ function populateInfoWindow(marker, infowindow) {
     if (infowindow.marker != marker) {
       infowindow.setContent('');
       infowindow.marker = marker;
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function() {marker.setAnimation(null);}, 750);
       //adding Four Square API for each maker's inforview contents
-      clientID = "A5AP334QUNYVHP0YZXLG2TWX15IS1WYGECTAYBJSU4RIDEB3";
-      clientSecret= "IFVBHFLAL2M0WP2SRE3NAHAHRKOOJF1RXAJF2NDIRL1AEEVJ";
+      var clientID = "A5AP334QUNYVHP0YZXLG2TWX15IS1WYGECTAYBJSU4RIDEB3";
+      var clientSecret= "IFVBHFLAL2M0WP2SRE3NAHAHRKOOJF1RXAJF2NDIRL1AEEVJ";
       var foursquareURL="https://api.foursquare.com/v2/venues/explore?ll="+
           infowindow.marker.position.lat()+","+infowindow.marker.position.lng()+
           "&"+"client_id="+clientID+"&client_secret="+clientSecret+"&v=20190327"+
@@ -94,16 +98,16 @@ function populateInfoWindow(marker, infowindow) {
       $.getJSON(foursquareURL,function(data){
           //console.log(data);
           var respond = data.response.groups[0].items[0].venue;
-          name ="Ramen Stand: " + respond.name;
-          address = "Addrss: " +respond.location.formattedAddress[0]
+          var ramenName ="Ramen Stand: " + respond.name;
+          var address = "Address: " +respond.location.formattedAddress[0]
                     + respond.location.formattedAddress[1] ;
-          distance = "Distance: " + respond.location.distance + "m";
+          var distance = "Distance: " + respond.location.distance + "m";
           //set inforwindow content right after the Four Square api call
           infowindow.setContent('<div>' + marker.title + '</div>' +
                     '<div>' + marker.position + '</div>' +
-                    '<div>' + name + '</div>'+
+                    '<div>' + ramenName + '</div>'+
                     '<div>' + address + '</div>'+
-                  '<div>' + distance + '</div>');
+                    '<div>' + distance + '</div>');
           infowindow.open(map, marker);
         }).fail(function() {
                 // Send alert
@@ -145,16 +149,16 @@ function populateInfoWindow(marker, infowindow) {
     this.showMarkerInforOnClick = function(){
       for (var i=0; i< markers.length; i++){
         if (this.name() == markers[i].title) {
-          myMarker = markers[i];
+           var myMarker = markers[i];
         }
       }
       populateInfoWindow(myMarker, (new google.maps.InfoWindow()));
-      myMarker.setAnimation(google.maps.Animation.BOUNCE);
-      setTimeout(function() {myMarker.setAnimation(null);}, 750);
+      //myMarker.setAnimation(google.maps.Animation.BOUNCE);
+      //setTimeout(function() {myMarker.setAnimation(null);}, 750);
     } //end of showMarkerInforOnClick
   }; // end of ViewModel
 
-  googleError = function googleError() {
+  var googleError = function googleError() {
       alert(
           'Oops. Google Maps did not load. Please refresh the page and try again!'
       );

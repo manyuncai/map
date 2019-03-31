@@ -2,30 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood Map</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style type="text/css">
-      html, body { height: 100%; margin: 0; padding: 0; }
+    <style >
+      html,
+      body { height: 100%;
+         margin: 0;
+         padding: 0; }
       #map { height: 100%; }
     </style>
 </head>
 <body>
 
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
-      <button class="w3-bar-item w3-button w3-large"
-      onclick="w3_close()">Close &times;</button>
-    <a href="#" class="w3-bar-item w3-button"><input class="search" data-bind='value: filter, valueUpdate:"afterkeydown"' placeholder="Search by Locaction..."></a>
-    <a href="#" class="w3-bar-item w3-button"><ul id="location-list" data-bind="foreach: mylocationsFilter"> </a>
-      <a href="#" class="w3-bar-item w3-button"><li data-bind ="text: name, click: $parent.showMarkerInforOnClick"> </li></a>
-    </ul>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-ul w3-hoverable" style="display:none" id="mySidebar">
+      <button class="w3-button w3-large w3-ul w3-hoverable"
+              onclick="w3_close()">Close &times;</button>
+      <input class="w3-input w3-border" data-bind='value: filter, valueUpdate:"afterkeydown"' placeholder="Search by Locaction...">
+      <ul class="w3-ul w3-hoverable" data-bind="foreach: mylocationsFilter">
+        <li data-bind ="text: name, click: $parent.showMarkerInforOnClick">
+      </ul>
   </div>
 
   <div id="main">
     <div class="w3-teal">
-      <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+      <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
       <div class="w3-container">
         <h2>My Vacation Map</h2>
-        <h4> with Nearby Yummy Raman Noodle stand </h4>
+        <h4> with Nearby Yummy Raman Noodle Stand </h4>
       </div>
     </div>
   </div>
@@ -45,10 +49,12 @@
     }
     </script>
     <script src="js/lib/knockout-3.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/app.js"></script>
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDG6VRGeFDihTpzRslpphO7ZLyCjYF1iSE&callback=initMap">
+      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDG6VRGeFDihTpzRslpphO7ZLyCjYF1iSE&callback=initMap"
+       onerror="googleError()">
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </body>
 </html>

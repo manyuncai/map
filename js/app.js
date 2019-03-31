@@ -39,6 +39,7 @@ var locations = [
 var markers = [];
 var map;
 
+//setting up location as ko.observable arry
 var myLocation = function(data) {
   this.reservation = ko.observable(data.reservation);
   this.name = ko.observable(data.name);
@@ -47,6 +48,7 @@ var myLocation = function(data) {
   this.location = ko.observableArray(data.location);
 };
 
+// initMap is used for google API to set up map with markers.
 function initMap () {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 34.6784656, lng: 135.4601305},
@@ -54,13 +56,10 @@ function initMap () {
     });
   var largeInfowindow = new google.maps.InfoWindow();
   var bounds = new google.maps.LatLngBounds();
+  // for loop: to set up makers for the map with google API
   for (var i = 0; i < locations.length; i++){
-    //alert(locations.length);
     var position = {lat: locations[i].location[0], lng:locations[i].location[1]};
-    //alert(position.lng);
     var name = locations[i].name;
-    //alert(name);
-
     var marker = new google.maps.Marker({
       map: map,
       position: position,
@@ -68,55 +67,50 @@ function initMap () {
       animation: google.maps.Animation.DROP,
       id: i
     });
-    //alert(marker);
     markers.push(marker);
-    //alert("here...");
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
     });
     bounds.extend(markers[i].position);
-
   } //end of the for loop for each marker
   map.fitBounds(bounds);
   ko.applyBindings(new ViewModel());
 }; // end of initialize the maps
 
+//populate inforview windows with Four Square and maker information
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
       infowindow.setContent('');
       infowindow.marker = marker;
-      //adding Four Square API
-
+      //adding Four Square API for each maker's inforview contents
       clientID = "A5AP334QUNYVHP0YZXLG2TWX15IS1WYGECTAYBJSU4RIDEB3";
       clientSecret= "IFVBHFLAL2M0WP2SRE3NAHAHRKOOJF1RXAJF2NDIRL1AEEVJ";
       var foursquareURL="https://api.foursquare.com/v2/venues/explore?ll="+
           infowindow.marker.position.lat()+","+infowindow.marker.position.lng()+
           "&"+"client_id="+clientID+"&client_secret="+clientSecret+"&v=20190327"+
           "&limit=5&query=Ramen";
-          console.log(foursquareURL);
+      //.getJSON (apiurl, function(){}).fail() method to retrive Four Square API
       $.getJSON(foursquareURL,function(data){
-          console.log(data);
+          //console.log(data);
           var respond = data.response.groups[0].items[0].venue;
-          name = respond.name;
-          address = respond.location.formattedAddress[0]
+          name ="Ramen Stand: " + respond.name;
+          address = "Addrss: " +respond.location.formattedAddress[0]
                     + respond.location.formattedAddress[1] ;
-          console.log(address);
-          distance = respond.location.distance;
-          console.log(name + address + distance);
+          distance = "Distance: " + respond.location.distance + "m";
+          //set inforwindow content right after the Four Square api call
+          infowindow.setContent('<div>' + marker.title + '</div>' +
+                    '<div>' + marker.position + '</div>' +
+                    '<div>' + name + '</div>'+
+                    '<div>' + address + '</div>'+
+                  '<div>' + distance + '</div>');
+          infowindow.open(map, marker);
         }).fail(function() {
                 // Send alert
                 alert(
                     "There was an issue loading the Foursquare API. Please refresh your page to try again."
                 );
-            });
-      //end of Four Square api
-      infowindow.setContent('<div>' + marker.title + '</div>' +
-                '<div>' + marker.position + '</div>' +
-                '<div>' + name + '</div>'+
-                '<div>' + address + '</div>'+
-              '<div>' + distance + '</div>');
-      infowindow.open(map, marker);
+            });//end of Four Square api
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick',function(){
         infowindow.setMarker = null;
@@ -133,17 +127,14 @@ function populateInfoWindow(marker, infowindow) {
     locations.forEach(function(locationItem){
        self.locationList.push( new myLocation(locationItem));
      });
-
      // this computed function returns selected location name and shows markers in the filter
     this.mylocationsFilter = ko.computed(function(){
       var result = [];
       for (var i = 0; i <this.locationList().length; i++){
         var myMarker = markers[i];
-        //alert ((this.locationList()[i].name()+","+this.locationList()[i].city()));
         if ((this.locationList()[i].name()).toLowerCase().includes(this.filter().toLowerCase())){
           result.push(this.locationList()[i]);
           markers[i].setVisible(true);
-          //alert(this.markers[i]);
         } else {
           markers[i].setVisible(false);
         }// end of if
@@ -158,7 +149,6 @@ function populateInfoWindow(marker, infowindow) {
         }
       }
       populateInfoWindow(myMarker, (new google.maps.InfoWindow()));
-      //alert(name + address + distance);
       myMarker.setAnimation(google.maps.Animation.BOUNCE);
       setTimeout(function() {myMarker.setAnimation(null);}, 750);
     } //end of showMarkerInforOnClick

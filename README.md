@@ -3,7 +3,10 @@ Repository Location: https://github.com/manyuncai/map
 ### My Vacation Map
 * This is a single page application featuring a map of a neighborhood I would like to visit. This map including highlighted locations, third-party data about those locations and various ways to browse the content.
 
-### Setup and  Running the Application
+### Running Application with live github hosted link
+* Access live link from any device  https://manyuncai.github.io/map/
+
+### Setup and  Running the Application locally
 * Download project <a href= "https://github.com/manyuncai/map" > My Vacation Map </a> and unzip files to a directory of your choice
 * Open <a style="color:red">index.html </a> with browser(Chrome, IE  or Firefox)
 

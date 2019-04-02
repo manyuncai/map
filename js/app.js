@@ -38,7 +38,7 @@ var locations = [
       ];
 
 var markers = [];
-var map;
+var map, largeInfowindow;
 
 //setting up location as ko.observable arry
 var myLocation = function(data) {
@@ -55,7 +55,7 @@ function initMap () {
     center: {lat: 34.6784656, lng: 135.4601305},
     zoom: 20
     });
-  var largeInfowindow = new google.maps.InfoWindow();
+  largeInfowindow = new google.maps.InfoWindow();
   var bounds = new google.maps.LatLngBounds();
   // for loop: to set up makers for the map with google API
   for (var i = 0; i < locations.length; i++){
@@ -71,7 +71,6 @@ function initMap () {
     markers.push(marker);
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
-
     });
     bounds.extend(markers[i].position);
   } //end of the for loop for each marker
@@ -83,7 +82,7 @@ function initMap () {
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
-      infowindow.setContent('');
+      //infowindow.setContent('');
       infowindow.marker = marker;
       marker.setAnimation(google.maps.Animation.BOUNCE);
       setTimeout(function() {marker.setAnimation(null);}, 750);
@@ -141,6 +140,7 @@ function populateInfoWindow(marker, infowindow) {
           markers[i].setVisible(true);
         } else {
           markers[i].setVisible(false);
+          largeInfowindow.close(); //close the infowindow when marker is not selected
         }// end of if
       } //end of for loop
       return result; //return mylocationsFilter result array
@@ -152,9 +152,7 @@ function populateInfoWindow(marker, infowindow) {
            var myMarker = markers[i];
         }
       }
-      populateInfoWindow(myMarker, (new google.maps.InfoWindow()));
-      //myMarker.setAnimation(google.maps.Animation.BOUNCE);
-      //setTimeout(function() {myMarker.setAnimation(null);}, 750);
+      populateInfoWindow(myMarker, largeInfowindow);
     } //end of showMarkerInforOnClick
   }; // end of ViewModel
 

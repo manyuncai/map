@@ -16,8 +16,8 @@ Repository Location: https://github.com/manyuncai/map
   "https://www.w3schools.com/w3css/4/w3.css"> W3.CSS </a>
 
 ### JS library and File description
-* Knockout Framework <a  href= " https://knockoutjs.com/"> knockout.js </a>used to handle the list, filter, and any other information on the page that is subject to changing state. The library is downloaded in <a style="color:red"> /js/lib/knockout-3.2.0.js  </a>
-* <a style="color:red"> /js/app.js </a> is js file including data and manipulate view model for the application
-* <a style="color:red"> /index.html </a> is the .html file to display application to browser
+* <a style="color:red"> /js/lib/knockout-3.2.0.js </a> Knockout Framework <a  href= " https://knockoutjs.com/"> knockout.js </a>used to handle the list, filter, and any other information on the page that is subject to changing state. The library is downloaded in
+* <a style="color:red"> /js/app.js </a>   js file including data and manipulate view model for the application
+* <a style="color:red"> /index.html </a>  the .html file to display application to browser
 * <a style="color:red"> jQuery's ajax() and .fail() </a> method is used to handle the Four Square API Json data and error handling.
-* Used <a style="color:red"> onerror </a> event handler to handle Google Maps in synch and Fallback
+* <a style="color:red"> onerror </a> event handler to used to handle Google Maps in synch and Fallback
